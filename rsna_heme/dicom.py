@@ -1,5 +1,6 @@
 
 import glob
+import numpy as np
 import os
 import pydicom
 
@@ -29,10 +30,17 @@ class Dicom:
         img[img > img_max] = img_max
         return img
 
+    def _norm(self, img):
+        img += img.min()
+        img *= 255.0 / img.max()
+        img = img.astype(np.uint8)
+        return img
+
     def img_for_plot(self, **kwargs):
         img = self.dcm.pixel_array
         img = self._rescale(img)
         img = self._window(img, **kwargs)
+        img = self._norm(img)
         return img
 
     def plot(self, **kwargs):
