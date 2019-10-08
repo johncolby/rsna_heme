@@ -2,6 +2,7 @@ import logging
 from mxboard import SummaryWriter
 import numpy as np
 import os
+import subprocess
 
 def start_logger(args):
     """Start logging utilities for stdout, log files, and mxboard"""
@@ -14,6 +15,8 @@ def start_logger(args):
         os.makedirs(log_dir)
     fh = logging.FileHandler(log_file_path)
     logger.addHandler(fh)
+    hash = subprocess.check_output(["git", "describe", "--always"]).strip().decode('utf-8')
+    logger.info(f'Git commit hash: {hash}')
     logger.info(args)
     logger.info('Start training from [Epoch {}]'.format(args.start_epoch))
 
