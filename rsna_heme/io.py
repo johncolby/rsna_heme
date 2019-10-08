@@ -41,7 +41,13 @@ def pack_rec(base_dir, mode, out_dir = None):
 
         # Generate recordIO header
         if mode == 'train':
-            label = row.array
+            col_names = ['any',
+                         'epidural',
+                         'intraparenchymal',
+                         'intraventricular',
+                         'subarachnoid',
+                         'subdural']
+            label = row[col_names].array
         else:
             label = 0
         header = mx.recordio.IRHeader(0, label, i, 0)
