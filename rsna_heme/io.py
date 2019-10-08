@@ -7,6 +7,7 @@ import pydicom
 from sklearn.model_selection import StratifiedKFold
 from tqdm import tqdm
 
+from .dicom import Dicom
 from .labels import read_labels
 
 def pack_rec(base_dir, mode, out_dir = None):
