@@ -4,7 +4,6 @@ import os
 import pandas as pd
 import pydicom
 
-from mxnet.gluon.data.vision import transforms
 from sklearn.model_selection import StratifiedKFold
 from tqdm import tqdm
 
@@ -73,13 +72,6 @@ class CVSampler(mx.gluon.data.sampler.Sampler):
         skf = StratifiedKFold(n_splits = self.n_splits, shuffle = True, random_state = self.seed)
         folds = [{'train': tr, 'test': te} for tr, te in skf.split(X = np.zeros(len(self.groups)), y = self.groups)]
         return folds
-
-train_transform = transforms.Compose([transforms.Resize(512),
-                                      transforms.RandomFlipLeftRight(),
-                                      transforms.ToTensor()])
-
-val_transform   = transforms.Compose([transforms.Resize(512),
-                                      transforms.ToTensor()])
 
 def save_params(net, best_metric, current_metric, epoch, save_interval, prefix):
     """Logic for if/when to save/checkpoint model parameters"""

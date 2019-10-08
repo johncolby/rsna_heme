@@ -1,8 +1,9 @@
 
 import glob
-from matplotlib import pyplot as plt
 import os
 import pydicom
+
+from matplotlib import pyplot as plt
 
 class Dicom:
     def __init__(self, path):

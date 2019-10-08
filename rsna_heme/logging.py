@@ -1,8 +1,9 @@
 import logging
-from mxboard import SummaryWriter
 import numpy as np
 import os
 import subprocess
+
+from mxboard import SummaryWriter
 
 def start_logger(args):
     """Start logging utilities for stdout, log files, and mxboard"""
@@ -18,7 +19,7 @@ def start_logger(args):
     hash = subprocess.check_output(["git", "describe", "--always"]).strip().decode('utf-8')
     logger.info(f'Git commit hash: {hash}')
     logger.info(args)
-    logger.info('Start training from [Epoch {}]'.format(args.start_epoch))
+    logger.info(f'Start training from [Epoch {args.start_epoch}]')
 
     # Setup mxboard logging
     tb_dir = args.save_prefix + '_tb'
@@ -30,13 +31,6 @@ def start_logger(args):
 
 def log_epoch_hooks(epoch, metrics, logger, sw):
     """Epoch logging"""
-    # DSCs = np.array([v['DSC'] for k,v in metrics.items()])
-    # DSC_avg = DSCs.mean()
-    # logger.info('E %d | loss %.4f | ET %.4f | TC %.4f | WT %.4f | Avg %.4f'%((epoch, train_loss) + tuple(DSCs) + (DSC_avg, )))
-    # sw.add_scalar(tag='Dice', value=('Val ET', DSCs[0]), global_step=epoch)
-    # sw.add_scalar(tag='Dice', value=('Val TC', DSCs[1]), global_step=epoch)
-    # sw.add_scalar(tag='Dice', value=('Val WT', DSCs[2]), global_step=epoch)
-    # sw.add_scalar(tag='Dice', value=('Val Avg', DSCs.mean()), global_step=epoch)
-    logger.info('Epoch %d | Tacc: %.3f, Tloss: %.6f | Vacc: %.3f , Vloss: %.6f' %
+    logger.info('E %d | Tacc: %.3f, Tloss: %.3f | Vacc: %.3f , Vloss: %.3f' %
              (epoch, metrics[0], metrics[1], metrics[2], metrics[3]))
     return
