@@ -15,3 +15,16 @@ def read_labels(base_dir):
     # Encode all types of hemorrhage, for stratified CV
     df.loc[:, 'cv_group'] = df.loc[:, df.columns != 'any'].astype(str).apply(lambda x: ''.join(x), axis=1)
     return df
+
+def ids_from_dir(dcm_dir):
+    dcm_names = sorted([os.path.splitext(x)[0] for x in os.listdir(dcm_dir)])
+    df = pd.DataFrame({'ID': dcm_names})
+    df.set_index('ID', inplace = True)
+    return df
+
+heme_types = ['any',
+              'epidural',
+              'intraparenchymal',
+              'intraventricular',
+              'subarachnoid',
+              'subdural']

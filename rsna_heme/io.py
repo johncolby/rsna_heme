@@ -19,9 +19,7 @@ def pack_rec(base_dir, mode, out_dir = None):
     if mode == 'train':
         df = labels.read_labels(base_dir)
     elif mode == 'test':
-        dcm_names = sorted([os.path.splitext(x)[0] for x in os.listdir(dcm_dir)])
-        df = pd.DataFrame({'ID': dcm_names})
-        df.set_index('ID', inplace = True)
+        df = labels.ids_from_dir(dcm_dir)
 
     # Open recordIO file for writing
     rec_path = os.path.join(out_dir, mode + '.rec')
@@ -41,12 +39,7 @@ def pack_rec(base_dir, mode, out_dir = None):
 
         # Generate recordIO header
         if mode == 'train':
-            col_names = ['any',
-                         'epidural',
-                         'intraparenchymal',
-                         'intraventricular',
-                         'subarachnoid',
-                         'subdural']
+            col_names = labels.heme_types
             label = row[col_names].array
         else:
             label = 0
