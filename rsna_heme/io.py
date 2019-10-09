@@ -7,8 +7,8 @@ import pydicom
 from sklearn.model_selection import StratifiedKFold
 from tqdm import tqdm
 
-from .dicom import Dicom
-from .labels import read_labels
+from . import dicom
+from . import labels
 
 def pack_rec(base_dir, mode, out_dir = None):
     if out_dir == None:
@@ -17,7 +17,7 @@ def pack_rec(base_dir, mode, out_dir = None):
 
     # Load class labels
     if mode == 'train':
-        df = read_labels(base_dir)
+        df = labels.read_labels(base_dir)
     elif mode == 'test':
         dcm_names = sorted([os.path.splitext(x)[0] for x in os.listdir(dcm_dir)])
         df = pd.DataFrame({'ID': dcm_names})
@@ -36,7 +36,7 @@ def pack_rec(base_dir, mode, out_dir = None):
         dcm_path = os.path.join(dcm_dir, dcm_name)
 
         # Load DICOM and extract image data
-        dcm = Dicom(dcm_path)
+        dcm = dicom.Dicom(dcm_path)
         img = dcm.img_for_plot(center = 40, width = 80)
 
         # Generate recordIO header
