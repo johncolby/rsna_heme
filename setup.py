@@ -13,6 +13,7 @@ setup(
         'ipykernel',
         'ipython',
         'ipywidgets',
+        'kaggle',
         'mxboard',
         'mxnet_cu101mkl',
         'opencv-python',
