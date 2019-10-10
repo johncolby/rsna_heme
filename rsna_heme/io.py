@@ -10,7 +10,7 @@ from tqdm import tqdm
 from . import dicom
 from . import labels
 
-def pack_rec(base_dir, mode, out_dir = None):
+def pack_rec(base_dir, mode, center = 40, width = 80, out_dir = None):
     if out_dir == None:
         out_dir = base_dir
     dcm_dir = os.path.join(base_dir, f'stage_1_{mode}_images')
@@ -35,7 +35,7 @@ def pack_rec(base_dir, mode, out_dir = None):
 
         # Load DICOM and extract image data
         dcm = dicom.Dicom(dcm_path)
-        img = dcm.img_for_plot(center = 40, width = 80)
+        img = dcm.img_for_plot(center = center, width = width)
 
         # Generate recordIO header
         if mode == 'train':
