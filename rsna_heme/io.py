@@ -22,6 +22,8 @@ def pack_rec(base_dir, mode, center = 40, width = 80, out_dir = None):
         df = labels.ids_from_dir(dcm_dir)
 
     # Open recordIO file for writing
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
     rec_path = os.path.join(out_dir, mode + '.rec')
     idx_path = os.path.join(out_dir, mode + '.idx')
     record = mx.recordio.MXIndexedRecordIO(idx_path, rec_path, 'w')
