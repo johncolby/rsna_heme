@@ -31,7 +31,7 @@ class Dicom:
         return img
 
     def _norm(self, img):
-        img += img.min()
+        img -= img.min()
         img *= 255.0 / img.max()
         img = img.astype(np.uint8)
         return img
