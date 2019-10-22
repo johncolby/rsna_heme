@@ -2,7 +2,7 @@ import gluoncv
 import mxnet as mx
 
 def get_model(args):
-    net = gluoncv.model_zoo.get_model(args.model_name, pretrained = True)
+    net = gluoncv.model_zoo.get_model(args.model_name, pretrained = False)
     with net.name_scope():
         if hasattr(net, 'fc'):
             output_name = 'fc'
@@ -12,7 +12,7 @@ def get_model(args):
     if hasattr(args, 'params_path'):
         net.load_parameters(args.params_path)
     else:
-        getattr(net, output_name).initialize(mx.init.Xavier(), ctx = args.ctx)
+        net.initialize(mx.init.Xavier(), ctx = args.ctx)
     net.collect_params().reset_ctx(args.ctx)
     net.hybridize()
     return net

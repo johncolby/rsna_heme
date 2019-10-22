@@ -2,7 +2,6 @@ import mxnet as mx
 import numpy as np
 import os
 import pandas as pd
-import pydicom
 
 from sklearn.model_selection import StratifiedKFold
 from tqdm import tqdm
@@ -10,7 +9,7 @@ from tqdm import tqdm
 from . import dicom
 from . import labels
 
-def pack_rec(base_dir, mode, center = 40, width = 80, out_dir = None):
+def pack_rec(base_dir, mode, wl, out_dir = None):
     if out_dir == None:
         out_dir = base_dir
     dcm_dir = os.path.join(base_dir, f'stage_1_{mode}_images')
@@ -29,15 +28,19 @@ def pack_rec(base_dir, mode, center = 40, width = 80, out_dir = None):
     record = mx.recordio.MXIndexedRecordIO(idx_path, rec_path, 'w')
 
     # Loop over subjects
-    i = 0
-    for ID, row in tqdm(df.iterrows(), total=len(df)):
+    for i, (ID, row) in tqdm(df.iterrows(), total=len(df)):
         # Get DICOM path
         dcm_name = ID + '.dcm'
         dcm_path = os.path.join(dcm_dir, dcm_name)
 
         # Load DICOM and extract image data
         dcm = dicom.Dicom(dcm_path)
-        img = dcm.img_for_plot(center = center, width = width)
+        # img = dcm.img_for_plot(center = center, width = width)
+
+        img1 = dcm.img_for_plot(center=wl[0][0], width=wl[0][1])
+        img2 = dcm.img_for_plot(center=wl[1][0], width=wl[1][1])
+        img3 = dcm.img_for_plot(center=wl[2][0], width=wl[2][1])
+        img = np.stack([img1, img2, img3], axis=2)
 
         # Generate recordIO header
         if mode == 'train':
@@ -52,7 +55,6 @@ def pack_rec(base_dir, mode, center = 40, width = 80, out_dir = None):
 
         # Append record to recordIO file
         record.write_idx(i, img_packed)
-        i += 1
     record.close()
 
 class CVSampler(mx.gluon.data.sampler.Sampler):
