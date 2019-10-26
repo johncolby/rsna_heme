@@ -8,10 +8,15 @@ from tqdm import tqdm
 
 from . import dicom
 from . import labels
+from . import logger
 
 def pack_rec(base_dir, mode, wl, out_dir = None):
     if out_dir == None:
         out_dir = base_dir
+
+    log = logger.Logger(out_dir, mode)
+    log.log(locals())
+
     dcm_dir = os.path.join(base_dir, f'stage_1_{mode}_images')
 
     # Load class labels
@@ -28,7 +33,7 @@ def pack_rec(base_dir, mode, wl, out_dir = None):
     record = mx.recordio.MXIndexedRecordIO(idx_path, rec_path, 'w')
 
     # Loop over subjects
-    for i, (ID, row) in tqdm(df.iterrows(), total=len(df)):
+    for i, (ID, row) in enumerate(tqdm(df.iterrows(), total=len(df))):
         # Get DICOM path
         dcm_name = ID + '.dcm'
         dcm_path = os.path.join(dcm_dir, dcm_name)
@@ -56,6 +61,7 @@ def pack_rec(base_dir, mode, wl, out_dir = None):
         # Append record to recordIO file
         record.write_idx(i, img_packed)
     record.close()
+    log.close()
 
 class CVSampler(mx.gluon.data.sampler.Sampler):
     def __init__(self, groups, n_splits, i_fold, mode = 'train', shuffle = True, seed = 1):
