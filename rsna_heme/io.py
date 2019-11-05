@@ -56,7 +56,7 @@ def pack_rec(base_dir, mode, wl, out_dir = None):
         header = mx.recordio.IRHeader(0, label, i, 0)
 
         # Pack data into binary recordIO format as compressed jpg
-        img_packed = mx.recordio.pack_img(header, img)
+        img_packed = mx.recordio.pack_img(header, img, quality=100)
 
         # Append record to recordIO file
         record.write_idx(i, img_packed)
