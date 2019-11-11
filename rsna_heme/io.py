@@ -10,14 +10,16 @@ from . import dicom
 from . import labels
 from . import logger
 
-def pack_rec(base_dir, mode, wl, out_dir = None):
+def pack_rec(base_dir, stage, mode, wl, out_dir = None):
     if out_dir == None:
         out_dir = base_dir
 
-    log = logger.Logger(out_dir, mode)
+    name_str = f'stage_{stage}_{mode}'
+
+    log = logger.Logger(out_dir, name_str)
     log.log(locals())
 
-    dcm_dir = os.path.join(base_dir, f'stage_1_{mode}_images')
+    dcm_dir = os.path.join(base_dir, f'{name_str}_images')
 
     # Load class labels
     if mode == 'train':
@@ -28,8 +30,8 @@ def pack_rec(base_dir, mode, wl, out_dir = None):
     # Open recordIO file for writing
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
-    rec_path = os.path.join(out_dir, mode + '.rec')
-    idx_path = os.path.join(out_dir, mode + '.idx')
+    rec_path = os.path.join(out_dir, name_str + '.rec')
+    idx_path = os.path.join(out_dir, name_str + '.idx')
     record = mx.recordio.MXIndexedRecordIO(idx_path, rec_path, 'w')
 
     # Loop over subjects
