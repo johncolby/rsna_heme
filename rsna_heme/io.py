@@ -44,10 +44,7 @@ def pack_rec(base_dir, stage, mode, wl, out_dir = None):
         dcm = dicom.Dicom(dcm_path)
         # img = dcm.img_for_plot(center = center, width = width)
 
-        img1 = dcm.img_for_plot(center=wl[0][0], width=wl[0][1])
-        img2 = dcm.img_for_plot(center=wl[1][0], width=wl[1][1])
-        img3 = dcm.img_for_plot(center=wl[2][0], width=wl[2][1])
-        img = np.stack([img1, img2, img3], axis=2)
+        img = dcm.img_for_plot3(wl)
 
         # Generate recordIO header
         if mode == 'train':

@@ -47,3 +47,10 @@ class Dicom:
         img = self.img_for_plot(**kwargs)
         plt.imshow(img, cmap='gray')
         plt.axis('off')
+
+    def img_for_plot3(self, wl):
+        img1 = self.img_for_plot(center=wl[0][0], width=wl[0][1])
+        img2 = self.img_for_plot(center=wl[1][0], width=wl[1][1])
+        img3 = self.img_for_plot(center=wl[2][0], width=wl[2][1])
+        img = np.stack([img1, img2, img3], axis=2)
+        return img
