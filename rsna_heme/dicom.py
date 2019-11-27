@@ -18,7 +18,7 @@ class Dicom:
 
     def _parse_wl(self, field):
         x = getattr(self.dcm, field)
-        return int(x[0]) if len(x) > 1 else int(x)
+        return int(x[0]) if isinstance(x, pydicom.multival.MultiValue) else int(x)
 
     def _window(self, img, center=None, width=None):
         # import pdb; pdb.set_trace()
