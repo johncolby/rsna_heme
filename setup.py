@@ -7,7 +7,7 @@ setup(
     author='John Colby',
     author_email='john.b.colby@gmail.com',
     description='RSNA intracranial hemorrhage challenge',
-    packages=find_packages(),
+    packages=['rsna_heme'],
     install_requires=[
         'gluoncv',
         'ipykernel',
