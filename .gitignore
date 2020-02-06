@@ -1,5 +1,10 @@
 *.egg-info
 .ipynb_checkpoints
+params/
 *.params
+predictions/
 __pycache__
+.idea
+*.log
+*.csv
 
