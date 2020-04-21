@@ -22,7 +22,7 @@ class Logger:
         self._log_path = os.path.join(self._log_dir, f'{self._log_name}.log')
         if not os.path.exists(self._log_dir):
             os.makedirs(self._log_dir)
-        fh = logging.FileHandler(self._log_path)
+        fh = logging.FileHandler(self._log_path, mode='w')
         self.logger.addHandler(fh)
 
     def log(self, msg):
