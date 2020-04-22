@@ -1,3 +1,4 @@
+from . import app
 from . import cnn
 from . import dicom
 from . import io
