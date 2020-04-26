@@ -14,14 +14,15 @@ from . import labels
 from . import transforms
 
 class HemeStudy(RadStudy):
-    def __init__(self, acc='', zip_path='', model_path='', wl=[(40, 80), (80, 200), (40, 380)]):
-        super().__init__(acc, zip_path, model_path)
+    def __init__(self, wl=[(40, 80), (80, 200), (40, 380)], **kwargs):
+        super().__init__(**kwargs)
+        
         self.app_name = 'heme' 
         self.wl = wl
         self.channels = 'axial CT'
         self.series_picks = pd.DataFrame({'class': ['axial CT'], 'prob': '', 'SeriesNumber': 2, 'series': ''})
 
-    def process(self, endpoint, save=True):
+    def process(self, save=True):
         self.series_picks.series = self.series_to_path(2)
         dir_series = self.series_picks.series[0]
         dcm_names = os.listdir(dir_series)
@@ -31,7 +32,7 @@ class HemeStudy(RadStudy):
             dcm_path = os.path.join(dir_series, dcm_name)
             data = self._load_dcm(dcm_path)
             data_str = pickle.dumps(data[0][0])
-            prob = requests.post(endpoint, files = {'data': data_str}).json()
+            prob = requests.post(self.process_url, files = {'data': data_str}).json()
             probs_all.append(prob)
         probs = pd.DataFrame(probs_all, columns=labels.heme_types)
         if save is True:

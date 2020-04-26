@@ -19,14 +19,12 @@ class Options(FlaskForm):
         super(Options, self).__init__(csrf_enabled=csrf_enabled, *args, **kwargs)
 
 def wrapper_fun(app, form):
-    args = argparse.Namespace()
-    args.acc             = form['acc']
-    args.air_url         = app.config['AIR_URL']
-    args.cred_path       = app.config['DOTENV_FILE']
-    args.seg_url         = urljoin(app.config['SEG_URL'], 'heme')
-    args.output_dir      = os.path.join(app.config['OUTPUT_DIR_NODE'], 'heme')
-
-    HemeStudy(acc = form['acc']).run(args)
+    HemeStudy(acc = form['acc'],
+              download_url = app.config['AIR_URL'],
+              cred_path = app.config['DOTENV_FILE'],
+              process_url = urljoin(app.config['SEG_URL'], 'heme'),
+              output_dir = os.path.join(app.config['OUTPUT_DIR_NODE'], 'heme')
+              ).run()
 
 app = AppPlugin(long_name = 'NCHCT hemorrhage',
                 short_name = 'heme',
