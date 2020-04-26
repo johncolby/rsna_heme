@@ -47,17 +47,3 @@ class HemeStudy(RadStudy):
         data = mx.gluon.data.SimpleDataset([(img, 0)])
         data = data.transform_first(transforms.train_transform)
         return data
-
-def app_wrapper(args):
-    try:
-        mri = HemeStudy(acc=args.acc)
-        mri.setup()
-        mri.download(URL = args.air_url, cred_path = args.cred_path)
-        mri.setup()
-        mri.process(endpoint = args.seg_url)
-        mri.report()
-        mri.copy_results(output_dir = args.output_dir)
-        mri.rm_tmp()
-    except: 
-        logging.exception('Processing failed.')
-        mri.rm_tmp()

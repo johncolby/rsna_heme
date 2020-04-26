@@ -1,4 +1,4 @@
-from . import app
+from . import process
 from . import cnn
 from . import dicom
 from . import io
