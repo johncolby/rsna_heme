@@ -33,6 +33,7 @@ class HemeStudy(RadStudy):
             data = self._load_dcm(dcm_path)
             data_str = pickle.dumps(data[0][0])
             prob = requests.post(self.process_url, files = {'data': data_str}).json()
+            prob = mx.nd.array(prob).sigmoid().asnumpy()
             probs_all.append(prob)
         probs = pd.DataFrame(probs_all, columns=labels.heme_types)
         if save is True:
