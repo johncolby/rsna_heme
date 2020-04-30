@@ -15,7 +15,7 @@ setup(
         'ipywidgets',
         'kaggle',
         'mxboard',
-        'mxnet_cu101mkl',
+        #'mxnet',
         'opencv-python',
         'pandas',
         'pydicom',
